@@ -4,7 +4,7 @@ const schedule = require("node-schedule");
 const nodemailer = require("nodemailer");
 
 const app = express();
-const port = 3001; // Use a different port from your React app
+const port = 3001; // Use a different port from React app
 
 // Middleware to parse JSON
 app.use(bodyParser.json());
