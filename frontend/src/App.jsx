@@ -1,4 +1,3 @@
-import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import Accordion from "./components/Accordion";
 import SubmitButton from "./components/SubmitButton";
