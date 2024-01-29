@@ -1,6 +1,8 @@
+// inputfield.jsx
 import { useForm } from "react-hook-form";
 
-function InputField({ type, placeholder }) {
+function InputField({ type, placeholder, name }) {
+  // Add "name" as a prop
   const {
     register,
     formState: { errors },
@@ -9,10 +11,11 @@ function InputField({ type, placeholder }) {
   return (
     <>
       <input
-        className="w-full bg-blue font-semibold placeholder-opaque-black p-3 mt-5 rounded-sm"
+        className="w-full text-black bg-blue font-semibold placeholder-opaque-black p-3 mt-5 rounded-md"
         type={type}
         placeholder={placeholder}
-        {...register("name", {
+        {...register(name, {
+          // Use the "name" prop for registration
           required: true,
           maxLength: 100,
           pattern:
@@ -23,11 +26,11 @@ function InputField({ type, placeholder }) {
               : /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$/i,
         })}
       />
-      {errors[type.toLowerCase()] && (
+      {errors[name.toLowerCase()] && ( // Use "name" for error display
         <p className="mt-1 text-red-400">
-          {errors[type.toLowerCase()].type === "required" &&
+          {errors[name.toLowerCase()].type === "required" &&
             "This field is required."}
-          {errors[type.toLowerCase()].type === "maxLength" &&
+          {errors[name.toLowerCase()].type === "maxLength" &&
             "Max length is 100 char."}
         </p>
       )}

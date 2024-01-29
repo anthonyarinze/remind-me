@@ -14,6 +14,7 @@ read -p "enter your commit message: " commit_message
 # create commit with the commit message
 cleaned_msg=$(echo -e "$commit_message" | sed -e 's/\x1b\[[0-9;]*m//g')
 git commit -m "$cleaned_msg"
+
 # push changes with commit message to remote repo
 git push origin main
 

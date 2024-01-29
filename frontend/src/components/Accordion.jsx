@@ -30,7 +30,7 @@ const Accordion = ({ title, content }) => {
       </button>
       {isOpen && (
         <div
-          className={`px-4 py-4 text-gray-600 transition-max-height duration-300 ease-in-out overflow-hidden ${
+          className={`px-4 py-4 text-gray-200 overflow-hidden ${
             isOpen ? "h-full" : "h-0"
           }`}
         >
