@@ -2,9 +2,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
 const cors = require("cors");
+const schedule = require("node-schedule");
 require("dotenv").config();
-
-import { initializeApp } from "firebase/app";
 
 const app = express();
 const port = 3001; // Use a different port from React app
@@ -15,9 +14,26 @@ app.use(bodyParser.json());
 // Configure CORS
 app.use(cors());
 
+// form submissions storage
+let submissions = [];
+
 // Endpoint to handle form submissions
 app.post("/submit-form", async (req, res) => {
   const { email, phone, subject } = req.body;
+  submissions.push({ email, phone, subject });
+
+  schedule.scheduleJob("0 0 * * *", () => {
+    const today = new Date();
+    const sevenDaysAgo = new Date(today);
+    sevenDaysAgo.setDate(today.getDate() - 7);
+
+    const reminders = submissions.filter((submission) => {
+      return new Date(submission.timestamp) <= sevenDaysAgo;
+    });
+    reminders.forEach((reminder) => {
+      sendImmediateEmail(reminder.email, reminder.phone, reminder.subject);
+    });
+  });
 
   // Send immediate email to the user
   const emailResult = await sendImmediateEmail(email, subject, phone);
@@ -32,7 +48,7 @@ app.post("/submit-form", async (req, res) => {
 });
 
 // Function to send immediate email
-const sendImmediateEmail = async (email, subject, phone) => {
+const sendImmediateEmail = async (email, phone, subject) => {
   let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
